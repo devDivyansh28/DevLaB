@@ -41,17 +41,15 @@ export const Navbar = ({userRole}:any) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <ModeToggle/>
+            <ModeToggle />
             <Show when={"signed-in"}>
-                {
-                    userRole && userRole===UserRole.ADMIN && (
-                        <Link href={"/create-problem"}>
-                            <Button variant={'outline'} size={'default'}>
-                                Create Problem
-                            </Button>
-                        </Link>
-                    )
-                }
+              {userRole && userRole === UserRole.ADMIN && (
+                <Link href={"/create-problem"}>
+                  <Button variant={"outline"} size={"default"}>
+                    Create Problem
+                  </Button>
+                </Link>
+              )}
               <UserButton />
             </Show>
             <Show when={"signed-out"}>

@@ -79,7 +79,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto text-center">
           {/* Badge */}
           <Badge
-            variant = "secondary"
+            variant="secondary"
             className="mb-8 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900"
           >
             <Star className="w-4 h-4 mr-2" />

@@ -49,39 +49,40 @@ export const currentUserRole = async()=>{
                 clerkId : id
             },
             select : {
-                role : true
+                role : true,
             }
         })
 
-        return userRole?.role;
+        return {success: true , userRole}
 
     } catch (error) {
         return {success: false , error : error}
     }
 }
 
-// export const getCurrentUserData = async()=>{
-//     try {
-//         const user = await currentUser();
-//         if(!user){
-//             return {sucess : false , error : "No user found with Given Credentials"}
-//         }
+export const getCurrentUserData = async()=>{
+    try {
+        const user = await currentUser();
+        if(!user){
+            return {sucess : false , error : "No user found with Given Credentials"}
+        }
         
-//         const {id} = user;
+        const {id} = user;
         
-//         const userData = await prisma.user.findUnique({
-//             where : {
-//                 clerkId : id,
-//             },
-//             select : {
-//                 id : true,
-//                 firstName : true , 
-//                 lastName : true,
-//                 email : true,
-//                 imageUrl : true,
-//             }
-//         })
-//     } catch (error) {
-        
-//     }
-// }
+        const userData = await prisma.user.findUnique({
+            where : {
+                clerkId : id,
+            },
+            select : {
+                id : true,
+                firstName : true , 
+                lastName : true,
+                email : true,
+                imageUrl : true,
+            }
+        })
+        return {sucess: true , userData};
+    } catch (error) {
+        return {success: false , error}
+    }
+}

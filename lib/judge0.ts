@@ -32,3 +32,27 @@ export async function submitBatch(submissions : any){
 
     return data;
 }
+
+export async function pollBatchResults(tokens:string[]){
+    while (true){
+const options = {
+  method: "GET",
+  url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
+  params: tokens.join(","),
+  headers: {
+    "x-rapidapi-key": "276049348cmshae1414f34ca7e6bp1a3f5djsnedf20af336fa",
+    "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
+  },
+};
+
+const { data } = await axios.request(options);
+
+const results = data.submissions;
+
+const isAllDone = results.every(
+  (r: any) => r.status.id !== 1 && r.status.id !== 2,
+);
+if (isAllDone) return results;
+
+    }
+}

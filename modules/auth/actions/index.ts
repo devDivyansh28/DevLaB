@@ -79,6 +79,7 @@ export const getCurrentUserData = async()=>{
                 lastName : true,
                 email : true,
                 imageUrl : true,
+                role: true
             }
         })
         return {sucess: true , userData};

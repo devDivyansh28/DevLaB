@@ -6,7 +6,7 @@ export const problemSchema = z.object({
 
   description: z.string().min(10, "Description must be atleast 10 characters"),
 
-  difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
+  difficulty: z.enum(["EASY", "MEDIUM", "HARD"]).optional(),
 
   tags: z.array(z.string()).min(1, "At least one tag is required"),
 

@@ -2,6 +2,7 @@ import { ModeToggle } from "@/components/modeToggle";
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@/lib/generated/prisma/enums";
 import { getCurrentUserData } from "@/modules/auth/actions";
+import CreateProblemForm from "@/modules/problems/component/create-problem-form";
 
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -29,7 +30,7 @@ const CreateProblemPage = async () => {
         <ModeToggle/>
       </div>
 
-      
+      <CreateProblemForm/>
     </section>
   );
 };

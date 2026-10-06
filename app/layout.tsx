@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import {ClerkProvider} from "@clerk/nextjs"
 import { ThemeProvider } from "@/Providers/theme-provider";
+import { Toaster } from "@/components/ui/toast";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           disableTransitionOnChange
         >
           <ClerkProvider>
+            <Toaster/>
             {children}
           </ClerkProvider>
         </ThemeProvider>

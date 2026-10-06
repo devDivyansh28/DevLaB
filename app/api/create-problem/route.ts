@@ -38,13 +38,15 @@ export async function POST(request:NextRequest){
           !codeSnippets ||
           !referenceSolutions
         ) {
+          console.log({ error: "Missing required fields" });
           return NextResponse.json(
             { error: "Missing required fields" },
             { status: 400 },
           );
         }
 
-        if(!Array.isArray(codeSnippets) || testCases.length===0){
+        if(!Array.isArray(testCases) || testCases.length===0){
+          console.log({ error: "At least One test Case is Required" });
             return NextResponse.json({
                 error : "At least One test Case is Required"
             } , {status:400});
@@ -75,6 +77,7 @@ export async function POST(request:NextRequest){
             const result = results[i];
             
             if(result.status.id !==3 ){
+              console.log({ error: `Validation failed for ${language}` });
               return NextResponse.json({
                 error: `Validation failed for ${language}`,
                 testCase: {
@@ -114,6 +117,7 @@ export async function POST(request:NextRequest){
 
        
     } catch (error) {
+       console.log({error})
         return NextResponse.json({
           success: false,
           error

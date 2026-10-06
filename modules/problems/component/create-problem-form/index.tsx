@@ -8,6 +8,7 @@ import { useCreateProblem } from "@/hooks/use-create-problem";
 import { BasicInfoSection } from "./basic-info-section";
 import { TagsSection } from "./tag-section";
 import { TestCasesSection } from "./test-cases-section";
+import { LanguageSections } from "./language-section";
 
 export function CreateProblemForm() {
   
@@ -36,6 +37,7 @@ export function CreateProblemForm() {
             <BasicInfoSection form = {form}/>
             <TagsSection form = {form} tagsArray={tagsArray}/>
             <TestCasesSection form={form} testCasesArray={testCasesArray}/>
+            <LanguageSections form={form}/>
               
            </form>
         </CardContent>

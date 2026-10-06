@@ -13,7 +13,7 @@ export const problemSchema = z.object({
   constraints: z.string().min(1, "Constraints are required"),
   hints: z.string().optional(),
 
-  editorial: z.string().optional,
+  editorial: z.string().optional(),
 
   testCases: z
     .array(

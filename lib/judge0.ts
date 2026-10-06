@@ -12,6 +12,7 @@ export function getJudge0languageId(language:string){
 }
 
 export async function submitBatch(submissions : any){
+  try {
     const options = {
       method: "POST",
       url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
@@ -19,7 +20,7 @@ export async function submitBatch(submissions : any){
         base64_encoded: "false",
       },
       headers: {
-        "x-rapidapi-key": "276049348cmshae1414f34ca7e6bp1a3f5djsnedf20af336fa",
+        "x-rapidapi-key": "ccfd6e3f77mshbd9c33218b36694p1cc143jsn1f1d42327f16",
         "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
         "Content-Type": "application/json",
       },
@@ -27,36 +28,58 @@ export async function submitBatch(submissions : any){
         submissions: submissions,
       },
     };
-    
+
     const { data } = await axios.request(options);
 
     return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Judge0 status:", error.response?.status);
+      console.error("Judge0 response:", error.response?.data);
+      console.error("Judge0 headers:", error.response?.headers);
+    }
+
+     console.log({error: error , reason : "In submitting Batch"})
+     throw error;
+  }
+    
 }
 
 export async function pollBatchResults(tokens:string[]){
-    while (true){
-const options = {
-  method: "GET",
-  url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
-  params: tokens.join(","),
-  headers: {
-    "x-rapidapi-key": "276049348cmshae1414f34ca7e6bp1a3f5djsnedf20af336fa",
-    "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
-  },
-};
+  try {
+    while (true) {
+      const options = {
+        method: "GET",
+        url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
+        params: {tokens: tokens.join(",")},
+        headers: {
+          "x-rapidapi-key":"ccfd6e3f77mshbd9c33218b36694p1cc143jsn1f1d42327f16",
+          "x-rapidapi-host":"judge0-extra-ce1.p.rapidapi.com",
+        },
+      };
 
-const { data } = await axios.request(options);
+      const { data } = await axios.request(options);
 
-const results = data.submissions;
+      const results = data.submissions;
 
-const isAllDone = results.every(
-  (r: any) => r.status.id !== 1 && r.status.id !== 2,
-);
-if (isAllDone) return results;
+      const isAllDone = results.every(
+        (r: any) => r.status.id !== 1 && r.status.id !== 2,
+      );
+      if (isAllDone) return results;
 
-await sleep(1000);
-
+      await sleep(1000);
     }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Judge0 status:", error.response?.status);
+      console.error("Judge0 response:", error.response?.data);
+      console.error("Judge0 headers:", error.response?.headers);
+    }
+
+    console.log({ error: error, reason: "In Poll Batch Results" });
+    throw error;
+  }
+
 }
 
 export  const sleep = (ms:number)=>new Promise((resolve)=> setTimeout(resolve,ms));

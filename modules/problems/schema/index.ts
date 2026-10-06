@@ -1,5 +1,5 @@
 import { title } from "process";
-import {z} from "zod";
+import { z } from "zod";
 
 export const problemSchema = z.object({
   title: z.string().min(3, "Title Must be at least of 3 characters"),
@@ -53,6 +53,42 @@ export const problemSchema = z.object({
     PYTHON: z.string().min(1, "Python code snippet is required"),
     JAVA: z.string().min(1, "Java solution is required"),
   }),
-
-  
 });
+
+export const defaultFormValues = {
+  title: "",
+  description: "",
+  difficulty: undefined,
+  constraints: "",
+  hints: "",
+  editorial: "",
+  testCases: [{ input: "", output: "" }],
+  tags: [""],
+  examples: {
+    JAVASCRIPT: { input: "", output: "", explanation: "" },
+    PYTHON: { input: "", output: "", explanation: "" },
+    JAVA: { input: "", output: "", explanation: "" },
+  },
+  codeSnippets: {
+    JAVASCRIPT: "function solution() {\n  // Write your code here\n}",
+    PYTHON: "def solution():\n    # Write your code here\n    pass",
+    JAVA: "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}",
+  },
+  referenceSolutions: {
+    JAVASCRIPT: "// Add your reference solution here",
+    PYTHON: "# Add your reference solution here",
+    JAVA: "// Add your reference solution here",
+  },
+};
+
+export const LANGUAGES = ["JAVASCRIPT", "PYTHON", "JAVA"];
+
+export const DIFFICULTY_OPTIONS = [
+  { value: "EASY", label: "Easy", className: "bg-green-100 text-green-800" },
+  {
+    value: "MEDIUM",
+    label: "Medium",
+    className: "bg-amber-100 text-amber-800",
+  },
+  { value: "HARD", label: "Hard", className: "bg-red-100 text-red-800" },
+];

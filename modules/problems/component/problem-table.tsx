@@ -13,6 +13,9 @@ import { ProblemsHeader } from './problem-header';
 import { useProblemFilters } from '../hooks/use-problem-filter';
 import { ProblemsFilters } from './problem-filter';
 import { usePagination } from '../hooks/use-pagination';
+import { ProblemRow } from './problem-row';
+import { ProblemsEmpty } from './problem-empty';
+import { ProblemsPagination } from './problems-pagination';
 
 const ProblemsTable = ({problems=[] , user}: any) => {
     const filters = useProblemFilters(problems);
@@ -52,7 +55,7 @@ const ProblemsTable = ({problems=[] , user}: any) => {
                     problem={problem}
                     user={user}
                     onDelete={() => {}}
-                    onSave={playlist.openAddToPlaylist}
+                    onSave={() => {}}
                   />
                 ))
               ) : (
@@ -63,6 +66,18 @@ const ProblemsTable = ({problems=[] , user}: any) => {
         </CardContent>
       </Card>
 
+      {/* Pagination */}
+      {pagination.showPagination && (
+        <ProblemsPagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          displayRange={pagination.displayRange}
+          canGoPrevious={pagination.canGoPrevious}
+          canGoNext={pagination.canGoNext}
+          onPrevious={pagination.goToPreviousPage}
+          onNext={pagination.goToNextPage}
+        />
+      )}
 
     </div>
   );

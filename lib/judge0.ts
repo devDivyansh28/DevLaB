@@ -11,55 +11,72 @@ export function getJudge0languageId(language:string){
     return languageMap[language.toUpperCase() as keyof typeof languageMap];
 }
 
-export async function submitBatch(submissions : any){
+const getHeaders = () => {
+  if (process.env.JUDGE0_USE_RAPIDAPI === "true") {
+    return {
+      "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
+      "x-rapidapi-host":
+        process.env.RAPIDAPI_HOST || "judge0-extra-ce1.p.rapidapi.com",
+      "Content-Type": "application/json",
+    };
+  }
+  // Central Codebox
+  return {
+    "X-Auth-Token": process.env.JUDGE0_AUTH_TOKEN || "dev-token",
+    "Content-Type": "application/json",
+  };
+};
+
+
+const getBaseUrl = () => {
+  if (process.env.JUDGE0_USE_RAPIDAPI === "true") {
+    return "https://judge0-extra-ce1.p.rapidapi.com";
+  }
+  return process.env.JUDGE0_API_URL || "http://localhost:2358";
+};
+
+
+export async function submitBatch(submissions: any) {
+  const baseUrl = getBaseUrl();
   try {
     const options = {
       method: "POST",
-      url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
+      url: `${baseUrl}/submissions/batch`, // ✅ Uses dynamic baseUrl
       params: {
         base64_encoded: "false",
       },
-      headers: {
-        "x-rapidapi-key": "ccfd6e3f77mshbd9c33218b36694p1cc143jsn1f1d42327f16",
-        "x-rapidapi-host": "judge0-extra-ce1.p.rapidapi.com",
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(), // ✅ Uses dynamic headers (X-Auth-Token for Codebox)
       data: {
         submissions: submissions,
       },
     };
-
     const { data } = await axios.request(options);
-
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Judge0 status:", error.response?.status);
-      console.error("Judge0 response:", error.response?.data);
-      console.error("Judge0 headers:", error.response?.headers);
+      console.error("Execution status:", error.response?.status);
+      console.error("Execution response:", error.response?.data);
+      console.error("Execution headers:", error.response?.headers);
     }
-
-     console.log({error: error , reason : "In submitting Batch"})
-     throw error;
+    console.log({ error: error, reason: "In submitting Batch" });
+    throw error;
   }
-    
 }
 
-export async function pollBatchResults(tokens:string[]){
+
+export async function pollBatchResults(tokens: string[]) {
+  const baseUrl = getBaseUrl(); // ✅ Added baseUrl
+
   try {
     while (true) {
       const options = {
         method: "GET",
-        url: "https://judge0-extra-ce1.p.rapidapi.com/submissions/batch",
-        params: {tokens: tokens.join(",")},
-        headers: {
-          "x-rapidapi-key":"ccfd6e3f77mshbd9c33218b36694p1cc143jsn1f1d42327f16",
-          "x-rapidapi-host":"judge0-extra-ce1.p.rapidapi.com",
-        },
+        url: `${baseUrl}/submissions/batch`, // ✅ Uses dynamic baseUrl
+        params: { tokens: tokens.join(",") },
+        headers: getHeaders(), // ✅ Uses dynamic headers
       };
 
       const { data } = await axios.request(options);
-
       const results = data.submissions;
 
       const isAllDone = results.every(
@@ -71,15 +88,15 @@ export async function pollBatchResults(tokens:string[]){
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Judge0 status:", error.response?.status);
-      console.error("Judge0 response:", error.response?.data);
-      console.error("Judge0 headers:", error.response?.headers);
+      console.error("Execution status:", error.response?.status);
+      console.error("Execution response:", error.response?.data);
+      console.error("Execution headers:", error.response?.headers);
     }
 
     console.log({ error: error, reason: "In Poll Batch Results" });
     throw error;
   }
-
 }
+
 
 export  const sleep = (ms:number)=>new Promise((resolve)=> setTimeout(resolve,ms));

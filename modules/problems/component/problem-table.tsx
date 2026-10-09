@@ -19,7 +19,9 @@ import { ProblemsPagination } from './problems-pagination';
 
 const ProblemsTable = ({problems=[] , user}: any) => {
     const filters = useProblemFilters(problems);
+    console.log("filtered PRoblems" ,filters.filteredProblems)
     const pagination = usePagination(filters.filteredProblems);
+    console.log("current page problems" , pagination.paginatedItems)
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8 p-6">

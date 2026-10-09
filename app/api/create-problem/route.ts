@@ -77,7 +77,7 @@ export async function POST(request:NextRequest){
             const result = results[i];
             
             if(result.status.id !==3 ){
-              console.log({ error: `Validation failed for ${language}` });
+              console.log({ error: `Validation failed for ${language}` , result });
               return NextResponse.json({
                 error: `Validation failed for ${language}`,
                 testCase: {

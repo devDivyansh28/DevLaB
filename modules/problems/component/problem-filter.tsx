@@ -105,7 +105,6 @@ function TagSelect({ value, onChange, tags }:any) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="ALL">All Tags</SelectItem>
-        /
         {tags.map((tag) => (
           <SelectItem key={tag} value={tag}>
             {tag}

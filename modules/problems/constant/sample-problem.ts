@@ -2,7 +2,7 @@ export const sampleDPProblem = {
   title: "Climbing Stairs",
   description:
     "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
-  difficulty: "EASY",
+  difficulty: "easy",
   tags: ["Dynamic Programming", "Math", "Memoization"],
   constraints: "1 <= n <= 45",
   hints:
@@ -102,57 +102,68 @@ class Main {
 * @param {number} n
 * @return {number}
 */
+
 function climbStairs(n) {
-// Base cases
-if (n <= 2) {
-  return n;
+  if (n <= 2) return n;
+  let dp = new Array(n + 1);
+  dp[1] = 1;
+  dp[2] = 2;
+  for (let i = 3; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2];
+  }
+  return dp[n];
 }
+// Driver code to read input and print output
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+rl.on('line', (line) => {
+  const n = parseInt(line.trim());
+  const result = climbStairs(n);
+  console.log(result);
+  rl.close();
+});`,
 
-// Dynamic programming approach
-let dp = new Array(n + 1);
-dp[1] = 1;
-dp[2] = 2;
-
-for (let i = 3; i <= n; i++) {
-  dp[i] = dp[i - 1] + dp[i - 2];
-}
-
-return dp[n];
-}`,
     PYTHON: `class Solution:
   def climbStairs(self, n: int) -> int:
-      # Base cases
       if n <= 2:
           return n
-      
-      # Dynamic programming approach
       dp = [0] * (n + 1)
       dp[1] = 1
       dp[2] = 2
-      
       for i in range(3, n + 1):
           dp[i] = dp[i - 1] + dp[i - 2]
-      
-      return dp[n]`,
+      return dp[n]
+# Driver code to read input and print output
+if __name__ == "__main__":
+    import sys
+    n = int(sys.stdin.readline().strip())
+    sol = Solution()
+    print(sol.climbStairs(n))`,
     JAVA: `import java.util.Scanner;
-
 class Main {
   public int climbStairs(int n) {
-      // Base cases
       if (n <= 2) {
           return n;
       }
-      
-      // Dynamic programming approach
       int[] dp = new int[n + 1];
       dp[1] = 1;
       dp[2] = 2;
-      
       for (int i = 3; i <= n; i++) {
           dp[i] = dp[i - 1] + dp[i - 2];
       }
-      
       return dp[n];
+  }
+  // Driver code
+  public static void main(String[] args) {
+      Scanner scanner = new Scanner(System.in);
+      int n = Integer.parseInt(scanner.nextLine().trim());
+      Main main = new Main();
+      System.out.println(main.climbStairs(n));
+      scanner.close();
   }
 }`,
   },
@@ -162,7 +173,7 @@ export const sampleStringProblem = {
   title: "Valid Palindrome",
   description:
     "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers. Given a string s, return true if it is a palindrome, or false otherwise.",
-  difficulty: "EASY",
+  difficulty: "easy",
   tags: ["String", "Two Pointers"],
   constraints:
     "1 <= s.length <= 2 * 10^5\ns consists only of printable ASCII characters.",

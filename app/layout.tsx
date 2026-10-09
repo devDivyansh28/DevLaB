@@ -4,7 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import {ClerkProvider} from "@clerk/nextjs"
 import { ThemeProvider } from "@/Providers/theme-provider";
-import { Toaster } from "@/components/ui/toast";
+import { Toaster } from "@/components/ui/sonner";
+
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <ClerkProvider>
             <Toaster/>
             {children}
+            
           </ClerkProvider>
         </ThemeProvider>
       </body>

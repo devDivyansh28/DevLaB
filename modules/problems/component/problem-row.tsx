@@ -97,10 +97,13 @@ function TagsList({ tags = [] }) {
 /**
  * Difficulty badge with color
  */
-function DifficultyBadge({ difficulty }:any) {
+function DifficultyBadge({ difficulty }: any) {
+  const label = difficulty
+    ? difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+    : "";
   return (
     <Badge className={`${getDifficultyColor(difficulty)} border-0 font-medium`}>
-      {difficulty}
+      {label}
     </Badge>
   );
 }

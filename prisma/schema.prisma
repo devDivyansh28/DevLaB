@@ -36,8 +36,8 @@ model User {
 
 enum Difficulty{
   easy
-  basic 
   medium
+  hard
 }
 model Problem {
   id String @id @default(cuid())

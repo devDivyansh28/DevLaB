@@ -6,7 +6,7 @@ export const problemSchema = z.object({
 
   description: z.string().min(10, "Description must be atleast 10 characters"),
 
-  difficulty: z.enum(["EASY", "MEDIUM", "HARD"]).optional(),
+  difficulty: z.enum(["easy", "medium", "hard"]).optional(),
 
   tags: z.array(z.string()).min(1, "At least one tag is required"),
 
@@ -84,11 +84,11 @@ export const defaultFormValues = {
 export const LANGUAGES = ["JAVASCRIPT", "PYTHON", "JAVA"];
 
 export const DIFFICULTY_OPTIONS = [
-  { value: "EASY", label: "Easy", className: "bg-green-100 text-green-800" },
+  { value: "easy", label: "Easy", className: "bg-green-100 text-green-800" },
   {
-    value: "MEDIUM",
+    value: "medium",
     label: "Medium",
     className: "bg-amber-100 text-amber-800",
   },
-  { value: "HARD", label: "Hard", className: "bg-red-100 text-red-800" },
+  { value: "hard", label: "Hard", className: "bg-red-100 text-red-800" },
 ];

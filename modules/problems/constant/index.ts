@@ -1,4 +1,4 @@
-export const DIFFICULTIES = ["EASY", "MEDIUM", "HARD"];
+export const DIFFICULTIES = ["easy", "medium", "hard"] as const;
 export const ITEMS_PER_PAGE = 5;
 
 export const DEFAULT_FILTERS = {
@@ -8,15 +8,15 @@ export const DEFAULT_FILTERS = {
 };
 
 export const DIFFICULTY_COLORS = {
-  EASY: "bg-green-100 text-green-800 hover:bg-green-100",
-  MEDIUM: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-  HARD: "bg-red-100 text-red-800 hover:bg-red-100",
+  easy: "bg-green-100 text-green-800 hover:bg-green-100",
+  medium: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+  hard: "bg-red-100 text-red-800 hover:bg-red-100",
 };
 
 export const getDifficultyColor = (
-  difficulty: keyof typeof DIFFICULTY_COLORS,
+  difficulty: keyof typeof DIFFICULTY_COLORS | string,
 ) => {
-  return DIFFICULTY_COLORS[difficulty] || "";
+  return DIFFICULTY_COLORS[difficulty as keyof typeof DIFFICULTY_COLORS] || "";
 };
 
 export const LANGUAGE_OPTIONS = [

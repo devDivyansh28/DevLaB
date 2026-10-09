@@ -15,6 +15,7 @@ export const getAllProblems = async()=>{
                 createdAt: "desc"
             }
         });
+        console.log(problems);
 
         return {
             success: true,

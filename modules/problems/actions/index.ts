@@ -26,3 +26,21 @@ export const getAllProblems = async()=>{
        return {success: false , error: "Failed to fetch problems"};
     }
 }
+
+export const getProblemById = async(id:string)=>{
+ try {
+    const problem = await prisma.problem.findUnique({
+        where: {
+            id:id
+        }
+    });
+
+    return {
+        success:true,
+        data: problem
+    }
+ } catch (error) {
+    console.error("❌ Error in fetching problem",error);
+    return {success: true , error: "Failed to fetch problem"}
+ }
+}

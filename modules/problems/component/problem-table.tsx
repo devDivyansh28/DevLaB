@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import {toast} from "sonner";
 import { Card , CardContent } from '@/components/ui/card';
-import { ProblemsHeader } from './problem-header';
+import { ProblemsHeader } from './problems-header';
 import { useProblemFilters } from '../hooks/use-problem-filter';
 import { ProblemsFilters } from './problem-filter';
 import { usePagination } from '../hooks/use-pagination';

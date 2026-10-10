@@ -1,23 +1,40 @@
-"use client";
-
-import { Plus } from "lucide-react";
+import { ModeToggle } from "@/components/modeToggle";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { getDifficultyColor } from "../constant";
 
-export function ProblemsHeader({ onCreatePlaylist }: any) {
-  console.log(onCreatePlaylist);
-
+export function ProblemHeader({ problem }: any) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="mb-6 flex items-start justify-between">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Problems</h1>
-        <p className="text-muted-foreground">
-          Manage and solve coding problems
-        </p>
+        <div className="flex items-center gap-4 mb-4">
+          <Link href="/">
+            <Button variant="outline" size="icon">
+              <ArrowLeft className="size-4" />
+            </Button>
+          </Link>
+          <h1 className="text-3xl font-bold">{problem?.title}</h1>
+          <Badge
+            className={cn(
+              "font-medium",
+              getDifficultyColor(problem?.difficulty),
+            )}
+          >
+            {problem?.difficulty}
+          </Badge>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {problem?.tags.map((tag: string) => (
+            <Badge key={tag} variant="outline" className="text-sm">
+              {tag}
+            </Badge>
+          ))}
+        </div>
       </div>
-      <Button onClick={onCreatePlaylist} className="gap-2">
-        <Plus className="h-4 w-4" />
-        Create Playlist
-      </Button>
+      <ModeToggle />
     </div>
   );
 }

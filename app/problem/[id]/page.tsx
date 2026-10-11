@@ -2,6 +2,7 @@
 import { Spinner } from '@/components/ui/spinner';
 import { ProblemDescription } from '@/modules/problems/component/problem-description';
 import { ProblemHeader } from '@/modules/problems/component/problem-header';
+import { ProblemTabs } from '@/modules/problems/component/problem-tabs';
 import { useProblem } from '@/modules/problems/hooks/use-problem';
 import { useParams } from 'next/navigation'
 import React from 'react'
@@ -22,6 +23,12 @@ const ProblemIdPage = () => {
               {/* Left Panel */}
               <div className='space-y-6'>
                 <ProblemDescription problem={problem}/>
+                <ProblemTabs problem={problem}/>
+              </div>
+              
+              {/* Right Panel */}
+              <div className='space-y-6'>
+      
               </div>
              </div>
         </div>

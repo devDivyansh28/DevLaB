@@ -1,5 +1,6 @@
 "use client"
 import { Spinner } from '@/components/ui/spinner';
+import { ProblemDescription } from '@/modules/problems/component/problem-description';
 import { ProblemHeader } from '@/modules/problems/component/problem-header';
 import { useProblem } from '@/modules/problems/hooks/use-problem';
 import { useParams } from 'next/navigation'
@@ -17,6 +18,12 @@ const ProblemIdPage = () => {
     <div className='min-h-screen bg-background'>
         <div className='max-w-7xl mx-auto p-6'>
              <ProblemHeader problem = {problem} />
+             <div className='grid lg:grid-cols-2 gap-6'>
+              {/* Left Panel */}
+              <div className='space-y-6'>
+                <ProblemDescription problem={problem}/>
+              </div>
+             </div>
         </div>
       
     </div>

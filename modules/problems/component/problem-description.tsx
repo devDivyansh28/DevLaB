@@ -4,7 +4,7 @@ import { ExampleSection } from "./example-section";
 import { ConstraintsSection } from "./constraint-section";
 
 export function ProblemDescription({ problem }: any) {
-  console.log(problem?.examples);
+//   console.log(problem?.examples);
 
   return (
     <Card>

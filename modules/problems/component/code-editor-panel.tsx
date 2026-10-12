@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -28,6 +29,17 @@ const CodeEditorPanel = ({
   isSubmitting,
 }: any) => {
   const { theme } = useTheme();
+  console.log(selectedLanguage , "This is selected Lanuguage")
+  console.log(
+    code,
+    onCodeChange,
+    selectedLanguage,
+    onLanguageChange,
+    onRun,
+    onSubmit,
+    isRunning,
+    isSubmitting,
+  );
 
   return (
     <Card>

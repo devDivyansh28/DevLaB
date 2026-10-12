@@ -12,19 +12,19 @@ import React from 'react'
 const ProblemIdPage = () => {
     const params = useParams<{id:string}>();
     const {problem , isLoading } = useProblem(params.id);
+    console.log("Problem is not undefinded" ,problem)
     const {
       selectedLanguage,
       setSelectedLanguage,
       code,
       setCode,
       isRunning,
-      setIsRunning,
       isSubmitting,
-      executionResponse,
       handleRun,
       handleSubmit,
-    } = useEditor({problem});
-
+    } = useEditor(problem);
+    
+    console.log("Recieved Selected language in page.tsx file" , selectedLanguage)
     if(isLoading){
         return <div className='flex flex-col items-center justify-center h-screen'>
            <Spinner/>
@@ -46,7 +46,7 @@ const ProblemIdPage = () => {
             <CodeEditorPanel
             code = {code}
             onCodeChange={setCode}
-            selectedLanugage={selectedLanguage}
+            selectedLanguage={selectedLanguage}
             onLanguageChange={setSelectedLanguage}
             onRun = {handleRun}
             onSubmit ={handleSubmit}

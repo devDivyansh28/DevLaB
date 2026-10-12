@@ -1,33 +1,37 @@
-'use client'
+"use client";
+
 import { useEffect, useState } from "react";
 
+export function useEditor(problem: any, initialLanguage = "JAVASCRIPT") {
+    console.log(problem , "Problem recieved in use Editor")
+  const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
+  const [code, setCode] = useState("");
+  const [isRunning, setIsRunning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [executionResponse, setExecutionResponse] = useState(null);
 
-export function useEditor({problem , initialLanguage="JAVASCRIPT"}:any){
-    const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage);
-    const [code, setCode] = useState("");
-    const [isRunning, setIsRunning] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [executionResponse, setExecutionResponse] = useState(null);
-
-    useEffect(()=>{
-        if(problem?.codeSnippets?.[selectedLanguage]){
-            setCode(problem?.codeSnippets?.[selectedLanguage])
-        }
-    },[selectedLanguage , problem])
-
-    const handleRun=()=>{};
-    const handleSubmit=()=>{};
-
-    return {
-        selectedLanguage,
-        setSelectedLanguage,
-        code,
-        setCode,
-        isRunning,
-        setIsRunning,
-        isSubmitting,
-        executionResponse,
-        handleRun,
-        handleSubmit,
+  useEffect(() => {
+    if (problem?.codeSnippets?.[selectedLanguage]) {
+      setCode(problem?.codeSnippets?.[selectedLanguage]);
     }
+  }, [selectedLanguage, problem]);
+
+  const handleRun = () => {
+  };
+
+  const handleSubmit = async () => {
+    
+  };
+
+  return {
+    selectedLanguage,
+    setSelectedLanguage,
+    code,
+    setCode,
+    isRunning,
+    isSubmitting,
+    executionResponse,
+    handleRun,
+    handleSubmit,
+  };
 }

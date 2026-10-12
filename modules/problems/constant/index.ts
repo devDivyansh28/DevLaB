@@ -19,15 +19,22 @@ export const getDifficultyColor = (
   return DIFFICULTY_COLORS[difficulty as keyof typeof DIFFICULTY_COLORS] || "";
 };
 
+
+
+
 export const LANGUAGE_OPTIONS = [
   { value: "JAVASCRIPT", label: "JavaScript" },
   { value: "PYTHON", label: "Python" },
   { value: "JAVA", label: "Java" },
 ];
 
+
+
 export const getEditorLanguage = (language: string) => {
   return language.toLowerCase();
 };
+
+
 
 export const EDITOR_OPTIONS = {
   minimap: { enabled: false },

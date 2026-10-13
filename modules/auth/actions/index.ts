@@ -82,6 +82,7 @@ export const getCurrentUserData = async()=>{
                 role: true
             }
         })
+        console.log(userData,"Inside auth action")
         return {sucess: true , userData};
     } catch (error) {
         return {success: false , error}

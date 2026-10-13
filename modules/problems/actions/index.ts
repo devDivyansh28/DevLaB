@@ -11,6 +11,7 @@ import { success } from "zod";
 export const getAllProblems = async()=>{
     try {
         const {userData} = await getCurrentUserData();
+        console.log(userData,"Inside get all Problems")
 
         const problems = await prisma.problem.findMany({
             orderBy: {
@@ -48,118 +49,125 @@ export const getProblemById = async(id:string)=>{
 }
 
 
-export const executeCode = async({source_code , language_id , stdin , expected_outputs , id}:any)=>{
+export const executeCode = async (
+  source_code,
+  language_id,
+  stdin,
+  expected_outputs,
+  id,
+) => {
+  const {userData:user} = await getCurrentUserData();
 
+  console.log("User Details" , user);
 
-    const {userData : user} = await getCurrentUserData();
-    if (
-      !Array.isArray(stdin) ||
-      stdin.length === 0 ||
-      !Array.isArray(expected_outputs) ||
-      expected_outputs.length !== stdin.length
-    ) {
-      return { success: false, error: "Invalid Test Cases" };
-    }
+  if (
+    !Array.isArray(stdin) ||
+    stdin.length === 0 ||
+    !Array.isArray(expected_outputs) ||
+    expected_outputs.length !== stdin.length
+  ) {
+    return { success: false, error: "Invalid Test Cases" };
+  }
 
+  const submissions = stdin.map((input) => ({
+    source_code,
+    language_id,
+    stdin: input,
+    base64_encoded: false,
+    wait: false,
+  }));
 
-      const submissions = stdin.map((input) => ({
-        source_code,
-        language_id,
-        stdin: input,
-        base64_encoded: false,
-        wait: false,
-      }));
+  const submitResponse = await submitBatch(submissions);
 
-      const submitResponse = await submitBatch(submissions);
+  const tokens = submitResponse.map((res) => res.token);
 
-      const tokens = submitResponse.map((res)=>res.token);
+  const results = await pollBatchResults(tokens);
 
-      const results = await pollBatchResults(tokens);
+  let allPassed = true;
 
-      let allPassed = true;
+  const detailedResults = results.map((result, i) => {
+    const stdout = result.stdout?.trim() || null;
+    const expected_output = expected_outputs[i]?.trim();
+    const passed = stdout === expected_output;
 
-      const detailedResults = results.map((result , i)=>{
-        const stdout = result.stdout || null;
-        const expected_output = expected_outputs[i];
-        const passed = expected_output === stdout;
-        if(!passed) allPassed = false;
+    if (!passed) allPassed = false;
 
-        return {
-          testCase: i + 1,
-          passed,
-          stdout,
-          expected: expected_output,
-          stderr: result.stderr || null,
-          compile_output: result.compile_output || null,
-          status: result.status.description,
-          memory: result.memory ? `${result.memory} KB` : undefined,
-          time: result.time ? `${result.time} s` : undefined,
-        };
-      })
+    return {
+      testCase: i + 1,
+      passed,
+      stdout,
+      expected: expected_output,
+      stderr: result.stderr || null,
+      compile_output: result.compile_output || null,
+      status: result.status.description,
+      memory: result.memory ? `${result.memory} KB` : undefined,
+      time: result.time ? `${result.time} s` : undefined,
+    };
+  });
 
-      const submission = await prisma.submission.create({
-        data: {
-          userId: user?.id,
-          problemId: id,
-          sourceCode: source_code,
-          language: getLanguageName(language_id),
-          stdin: stdin.join("\n"),
-          stdout: JSON.stringify(detailedResults.map((r) => r.stdout)),
-          stderr: detailedResults.some((r) => r.stderr)
-            ? JSON.stringify(detailedResults.map((r) => r.stderr))
-            : null,
-          compileOutput: detailedResults.some((r) => r.compile_output)
-            ? JSON.stringify(detailedResults.map((r) => r.compile_output))
-            : null,
-          status: allPassed ? "Accepted" : "Wrong Answer",
-          memory: detailedResults.some((r) => r.memory)
-            ? JSON.stringify(detailedResults.map((r) => r.memory))
-            : null,
-          time: detailedResults.some((r) => r.time)
-            ? JSON.stringify(detailedResults.map((r) => r.time))
-            : null,
-        },
-      });
+  const submission = await prisma.submission.create({
+    data: {
+      userId: user!.id,
+      problemId: id,
+      sourceCode: source_code,
+      language: getLanguageName(language_id),
+      stdin: stdin.join("\n"),
+      stdout: JSON.stringify(detailedResults.map((r) => r.stdout)),
+      stderr: detailedResults.some((r) => r.stderr)
+        ? JSON.stringify(detailedResults.map((r) => r.stderr))
+        : null,
+      compileOutput: detailedResults.some((r) => r.compile_output)
+        ? JSON.stringify(detailedResults.map((r) => r.compile_output))
+        : null,
+      status: allPassed ? "Accepted" : "Wrong Answer",
+      memory: detailedResults.some((r) => r.memory)
+        ? JSON.stringify(detailedResults.map((r) => r.memory))
+        : null,
+      time: detailedResults.some((r) => r.time)
+        ? JSON.stringify(detailedResults.map((r) => r.time))
+        : null,
+    },
+  });
 
-       if (allPassed) {
-         await prisma.problemSolved.upsert({
-           where: {
-             userId_problemId: { userId: user?.id, problemId: id },
-           },
+  if (allPassed) {
+    await prisma.problemSolved.upsert({
+      where: {
+        userId_problemId: { userId: user!.id, problemId: id },
+      },
 
-           update: {},
-           create: {
-             userId: user?.id,
-             problemId: id,
-           },
-         });
-       }
-       
-         const testCaseResults = detailedResults.map((result) => ({
-           submissionId: submission.id,
-           testCase: result.testCase,
-           passed: result.passed,
-           stdout: result.stdout,
-           expected: result.expected,
-           stderr: result.stderr,
-           compileOutput: result.compile_output,
-           status: result.status,
-           memory: result.memory,
-           time: result.time,
-         }));
-        
+      update: {},
+      create: {
+        userId: user!.id,
+        problemId: id,
+      },
+    });
+  }
 
-           await prisma.testCaseResult.createMany({ data: testCaseResults });
-      
-         const submissionWithTestCases = await prisma.submission.findUnique({
-          where: { id: submission.id },
-           include: {
-           testCases: true,
-            },
-           });
+  const testCaseResults = detailedResults.map((result) => ({
+    submissionId: submission.id,
+    testCase: result.testCase,
+    passed: result.passed,
+    stdout: result.stdout,
+    expected: result.expected,
+    stderr: result.stderr,
+    compileOutput: result.compile_output,
+    status: result.status,
+    memory: result.memory,
+    time: result.time,
+  }));
+
+  await prisma.testCaseResult.createMany({ data: testCaseResults });
+
+  const submissionWithTestCases = await prisma.submission.findUnique({
+    where: { id: submission.id },
+    include: {
+      testCases: true,
+    },
+  });
 
   return {
     success: true,
     submission: submissionWithTestCases,
   };
 };
+

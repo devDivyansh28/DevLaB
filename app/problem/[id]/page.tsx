@@ -1,6 +1,7 @@
 'use client'
 import { Spinner } from '@/components/ui/spinner';
 import CodeEditorPanel from '@/modules/problems/component/code-editor-panel';
+import { ExecutionResults } from '@/modules/problems/component/execution-result';
 import { ProblemDescription } from '@/modules/problems/component/problem-description';
 import { ProblemHeader } from '@/modules/problems/component/problem-header';
 import { ProblemTabs } from '@/modules/problems/component/problem-tabs';
@@ -23,6 +24,7 @@ const ProblemIdPage = () => {
       isSubmitting,
       handleRun,
       handleSubmit,
+      executionResponse
     } = useEditor(problem);
     
     if(isLoading){
@@ -54,6 +56,7 @@ const ProblemIdPage = () => {
               isSubmitting={isSubmitting}
             />
             <TestCasesPanel testCases={problem.testCases} />
+            <ExecutionResults executionResponse={executionResponse}/>
           </div>
         </div>
       </div>

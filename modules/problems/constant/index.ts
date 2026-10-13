@@ -45,4 +45,5 @@ export const EDITOR_OPTIONS = {
   automaticLayout: true,
   tabSize: 2,
   wordWrap: "on",
+  accessibilitySupport: "off",
 };

@@ -75,6 +75,7 @@ const CodeEditorPanel = ({
             theme={theme === "dark" ? "vs-dark" : "light"}
             // @ts-ignore
             options={EDITOR_OPTIONS}
+            
           />
         </div>
 

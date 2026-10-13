@@ -13,7 +13,7 @@ import React from 'react'
 const ProblemIdPage = () => {
     const params = useParams<{id:string}>();
     const {problem , isLoading } = useProblem(params.id);
-    console.log("Problem is not undefinded" ,problem)
+
     const {
       selectedLanguage,
       setSelectedLanguage,

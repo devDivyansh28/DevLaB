@@ -11,6 +11,16 @@ export function getJudge0languageId(language:string){
     return languageMap[language.toUpperCase() as keyof typeof languageMap];
 }
 
+export function getLanguageName(languageId: number) {
+  const LANGUAGE_NAMES = {
+    74: "TypeScript",
+    63: "JavaScript",
+    71: "Python",
+    62: "Java",
+  };
+  return LANGUAGE_NAMES[languageId as keyof typeof LANGUAGE_NAMES] || "Unknown";
+}
+
 const getHeaders = () => {
   if (process.env.JUDGE0_USE_RAPIDAPI === "true") {
     return {

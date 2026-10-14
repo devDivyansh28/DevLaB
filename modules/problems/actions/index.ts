@@ -171,3 +171,22 @@ export const executeCode = async (
   };
 };
 
+
+
+
+export const getAllSubmissionByCurrentUserForProblem = async (problemId:string)=>{
+  const {userData:user} = await getCurrentUserData();
+
+  const submissions = await prisma.submission.findMany({
+    where: {
+      problemId : problemId,
+      userId: user?.id
+    },
+    orderBy: { createdAt: "desc" }
+  })
+
+  return {
+    success: true,
+    data : submissions
+  }
+}

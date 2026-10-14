@@ -10,28 +10,35 @@ import { useEditor } from '@/modules/problems/hooks/use-editor';
 import { useProblem } from '@/modules/problems/hooks/use-problem';
 import { useParams } from 'next/navigation'
 import React from 'react'
+import { useSubmissionHistory } from '@/modules/problems/hooks/use-submission-history';
 
 const ProblemIdPage = () => {
-    const params = useParams<{id:string}>();
-    const {problem , isLoading } = useProblem(params.id);
+  const params = useParams<{ id: string }>();
+  const { problem, isLoading } = useProblem(params.id);
 
-    const {
-      selectedLanguage,
-      setSelectedLanguage,
-      code,
-      setCode,
-      isRunning,
-      isSubmitting,
-      handleRun,
-      handleSubmit,
-      executionResponse
-    } = useEditor(problem);
-    
-    if(isLoading){
-        return <div className='flex flex-col items-center justify-center h-screen'>
-           <Spinner/>
-        </div>
-    }   
+  const {
+    selectedLanguage,
+    setSelectedLanguage,
+    code,
+    setCode,
+    isRunning,
+    isSubmitting,
+    handleRun,
+    handleSubmit,
+    executionResponse,
+  } = useEditor(problem);
+  const { submissionHistory } = useSubmissionHistory(
+    params.id,
+    executionResponse?.submission,
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto p-6">
@@ -40,7 +47,10 @@ const ProblemIdPage = () => {
           {/* Left Panel */}
           <div className="space-y-6">
             <ProblemDescription problem={problem} />
-            <ProblemTabs problem={problem} />
+            <ProblemTabs
+              problem={problem}
+              submissionHistory={submissionHistory}
+            />
           </div>
 
           {/* Right Panel */}
@@ -56,7 +66,7 @@ const ProblemIdPage = () => {
               isSubmitting={isSubmitting}
             />
             <TestCasesPanel testCases={problem.testCases} />
-            <ExecutionResults executionResponse={executionResponse}/>
+            <ExecutionResults executionResponse={executionResponse} />
           </div>
         </div>
       </div>

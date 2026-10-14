@@ -1,4 +1,5 @@
 import axios from "axios";
+import { base64 } from "zod";
 
 export function getJudge0languageId(language:string){
     const languageMap = {
@@ -82,7 +83,7 @@ export async function pollBatchResults(tokens: string[]) {
       const options = {
         method: "GET",
         url: `${baseUrl}/submissions/batch`, // ✅ Uses dynamic baseUrl
-        params: { tokens: tokens.join(",") },
+        params: { tokens: tokens.join(",") , base64_encoded: "false" },
         headers: getHeaders(), // ✅ Uses dynamic headers
       };
 

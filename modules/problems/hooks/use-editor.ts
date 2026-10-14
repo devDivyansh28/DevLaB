@@ -28,7 +28,7 @@ export function useEditor(problem: any, initialLanguage = "JAVASCRIPT") {
      if (!problem) return;
 
      try {
-       setIsRunning(true);
+       setIsSubmitting(true);
        const language_id = getJudge0languageId(selectedLanguage);
        const stdin = problem.testCases.map((tc) => tc.input);
        const expected_outputs = problem.testCases.map((tc) => tc.output);
@@ -49,7 +49,7 @@ export function useEditor(problem: any, initialLanguage = "JAVASCRIPT") {
        console.error("Error executing code", error);
        toast.error("Error executing code");
      } finally {
-       setIsRunning(false);
+       setIsSubmitting(false);
      }
    };
 

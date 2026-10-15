@@ -79,7 +79,10 @@ export const getCurrentUserData = async()=>{
                 lastName : true,
                 email : true,
                 imageUrl : true,
-                role: true
+                role: true,
+                submissions: true,
+                solvedProblems: true,
+                playlists: true
             }
         })
         console.log(userData,"Inside auth action")

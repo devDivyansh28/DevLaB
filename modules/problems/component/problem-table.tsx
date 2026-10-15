@@ -18,6 +18,8 @@ import { ProblemsEmpty } from './problem-empty';
 import { ProblemsPagination } from './problems-pagination';
 import CreatePlaylistModal from '@/modules/playlists/components/create-playlist';
 import { usePlaylistActions } from '@/modules/playlists/hooks/use-playlist-action';
+import AddToPlaylistModal from '@/modules/playlists/components/add-to-playlist';
+import { pl } from 'date-fns/locale';
 
 const ProblemsTable = ({problems=[] , user}: any) => {
     const filters = useProblemFilters(problems);
@@ -61,7 +63,7 @@ const ProblemsTable = ({problems=[] , user}: any) => {
                     problem={problem}
                     user={user}
                     onDelete={() => {}}
-                    onSave={() => {}}
+                    onSave={playlist.openAddToPlaylist}
                   />
                 ))
               ) : (
@@ -91,7 +93,15 @@ const ProblemsTable = ({problems=[] , user}: any) => {
      onClose = {playlist.closeCreateModal}
      onSubmit = {playlist.handleCreatePlaylist}
      />
+     
 
+
+     <AddToPlaylistModal 
+     isOpen={playlist.isAddToPlaylistModalOpen}
+     onClose = {playlist.closeAddToPlaylistModal}
+     onSubmit={playlist.handleAddToPlaylist}
+     problemId={playlist.selectedProblemId}
+     />
     </div>
   );
 }

@@ -16,6 +16,8 @@ import { usePagination } from '../hooks/use-pagination';
 import { ProblemRow } from './problem-row';
 import { ProblemsEmpty } from './problem-empty';
 import { ProblemsPagination } from './problems-pagination';
+import CreatePlaylistModal from '@/modules/playlists/components/create-playlist';
+import { usePlaylistActions } from '@/modules/playlists/hooks/use-playlist-action';
 
 const ProblemsTable = ({problems=[] , user}: any) => {
     const filters = useProblemFilters(problems);
@@ -23,9 +25,11 @@ const ProblemsTable = ({problems=[] , user}: any) => {
     const pagination = usePagination(filters.filteredProblems);
     console.log("current page problems" , pagination.paginatedItems)
 
+    const playlist = usePlaylistActions();
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8 p-6">
-      <ProblemsHeader onCreatePlaylist={() => {}} />
+      <ProblemsHeader onCreatePlaylist={playlist.openCreateModal} />
 
       <ProblemsFilters
         search={filters.search}
@@ -80,6 +84,13 @@ const ProblemsTable = ({problems=[] , user}: any) => {
           onNext={pagination.goToNextPage}
         />
       )}
+
+
+     <CreatePlaylistModal
+     isOpen={playlist.isCreateModalOpen}
+     onClose = {playlist.closeCreateModal}
+     onSubmit = {playlist.handleCreatePlaylist}
+     />
 
     </div>
   );

@@ -16,6 +16,10 @@ import { usePagination } from '../hooks/use-pagination';
 import { ProblemRow } from './problem-row';
 import { ProblemsEmpty } from './problem-empty';
 import { ProblemsPagination } from './problems-pagination';
+import CreatePlaylistModal from '@/modules/playlists/components/create-playlist';
+import { usePlaylistActions } from '@/modules/playlists/hooks/use-playlist-action';
+import AddToPlaylistModal from '@/modules/playlists/components/add-to-playlist';
+import { pl } from 'date-fns/locale';
 
 const ProblemsTable = ({problems=[] , user}: any) => {
     const filters = useProblemFilters(problems);
@@ -23,9 +27,11 @@ const ProblemsTable = ({problems=[] , user}: any) => {
     const pagination = usePagination(filters.filteredProblems);
     console.log("current page problems" , pagination.paginatedItems)
 
+    const playlist = usePlaylistActions();
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8 p-6">
-      <ProblemsHeader onCreatePlaylist={() => {}} />
+      <ProblemsHeader onCreatePlaylist={playlist.openCreateModal} />
 
       <ProblemsFilters
         search={filters.search}
@@ -57,7 +63,7 @@ const ProblemsTable = ({problems=[] , user}: any) => {
                     problem={problem}
                     user={user}
                     onDelete={() => {}}
-                    onSave={() => {}}
+                    onSave={playlist.openAddToPlaylist}
                   />
                 ))
               ) : (
@@ -81,6 +87,21 @@ const ProblemsTable = ({problems=[] , user}: any) => {
         />
       )}
 
+
+     <CreatePlaylistModal
+     isOpen={playlist.isCreateModalOpen}
+     onClose = {playlist.closeCreateModal}
+     onSubmit = {playlist.handleCreatePlaylist}
+     />
+     
+
+
+     <AddToPlaylistModal 
+     isOpen={playlist.isAddToPlaylistModalOpen}
+     onClose = {playlist.closeAddToPlaylistModal}
+     onSubmit={playlist.handleAddToPlaylist}
+     problemId={playlist.selectedProblemId}
+     />
     </div>
   );
 }
